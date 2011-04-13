@@ -81,5 +81,5 @@ public class MacD {
 
 		return toReturn;
 
-	}	// mergeLongArrays
+	}	// mergeDoubleArrays
 
