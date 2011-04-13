@@ -74,14 +74,12 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
 		double[] macd = macdData.getMacd();
 		double[] signal = macdData.getSignal();
-		double[] histogram 
- = macdData.getHistogram();
+		double[] histogram = macdData.getHistogram();
 
 			// If this is bullish strategy, in which case we are looking for the macd to cross up and over 
 			// center line or to cross back down the signal line (as a stop loss).  We use the histogram to detect such
 			// a signal line crossover.
-		if (strategyId == 0)
- {
+		if (strategyId == 0) {
 
 			if (((macd[lookback] > 0) && (macd[lookback + 1] < 0)) ||
 				((histogram[lookback] < 0) && (histogram[lookback + 1] > 0)))
@@ -91,8 +89,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 			// If this is bearish strategy, in which case we are looking for the macd to cross down and under the
 			// center line or to cross back up the signal line (as a stop loss).  We use the histogram to detect such
 			// a signal line crossover.
-		else if (strategyId == 1)
- {
+		else if (strategyId == 1) {
 
 			if (((macd[lookback] < 0) && (macd[lookback + 1] > 0)) ||
 				((histogram[lookback] > 0) && (histogram[lookback + 1] < 0)))
@@ -118,8 +115,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		MacD macdData = sd.getMacd494();
 
 		double[] macd = macdData.getMacd();
-		double[] histogram 
- = macdData.getHistogram();
+		double[] histogram = macdData.getHistogram();
 
 		if (strategyId == 0) {
 
