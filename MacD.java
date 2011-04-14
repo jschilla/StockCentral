@@ -46,7 +46,7 @@ public class MacD {
 		for (int countMACDs = 0; countMACDs < macdWithoutZeros.length; countMACDs++)
 			macdWithoutZeros[countMACDs] = smallEMA[countMACDs + largeEMAPeriod] - largeEMA[countMACDs + largeEMAPeriod];
 
-		m_macd = StockCentral.mergeDoubleArrays(zeros, macdWithoutZeros);
+		m_macd = StockCentral.mergeDoubleArrays(macdWithoutZeros, zeros);
 
 			// Next, we'll calculate an EMA of the MacD.  We're going to calculate the EMA of the macdWithoutZeros array,
 			// and then we're going to merge that with the zeros array already created, and that's our signal line!

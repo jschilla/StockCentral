@@ -1050,33 +1050,33 @@ public class StockCentral implements StockCentralConstants {
 			// first, calculate the multiplier.
 		double multiplier = (2.0f / (1.0f + period));
 
-			// next, let's fill in the zeros at the beginning of the array.
-		for (int countZeros = 0; countZeros < (period - 1); countZeros++)
-			toReturn[countZeros] = 0;
+		// next, let's fill in the zeros at the beginning of the array.
+		for (int countZeros = 1; countZeros < period; countZeros++)
+			toReturn[toReturn.length - countZeros] = 0;
 
 			// now, we need to get the first EMA of the array, which will occur in the array at (period - 1).  This is just the same
 			// as the SMA.
 		double firstEMA = 0;
-		for (int countAdditurs = 0; countAdditurs < period; countAdditurs++)
-			firstEMA += closes[countAdditurs];
+		for (int countAdditurs = 1; countAdditurs < period + 1; countAdditurs++)
+			firstEMA += closes[toReturn.length - countAdditurs];
 
 		firstEMA = firstEMA / period;
 
-		toReturn[(period - 1)] = firstEMA;
+		toReturn[closes.length - period] = firstEMA;
 
 			// Now, we need to fill up the rest of the EMAs using the formula
 			// EMA = (Close today * multiplier)
 			// + (EMA of yesterday * (1 - multiplier))
 
-		for (int countEMAs = period; countEMAs < closes.length; countEMAs++) {
+		for (int countEMAs = closes.length - (period + 1); countEMAs >= 0; countEMAs--) {
 
-			toReturn[countEMAs] = (closes[countEMAs] * multiplier) + (toReturn[countEMAs - 1] * (1 - multiplier));
+			toReturn[countEMAs] = (closes[countEMAs] * multiplier) +
+				(toReturn[(countEMAs + 1)] * (1 - multiplier));
 
 				// the alternate code for method 1 is
 				// ((closes[countEMAs] - toReturn[(countEMAs - 1)]) * multiplier) + toReturn[(countEMAs - 1)];
 				// see http://www.decisionpoint.com/tacourse/MovingAve.html
-
-		}	// for countEMAs
+		}	// for
 
 		return toReturn;
 
@@ -1090,32 +1090,32 @@ public class StockCentral implements StockCentralConstants {
 		double multiplier = (2.0f / (1.0f + period));
 
 			// next, let's fill in the zeros at the beginning of the array.
-		for (int countZeros = 0; countZeros < (period - 1); countZeros++)
-			toReturn[countZeros] = 0;
+		for (int countZeros = 1; countZeros < period; countZeros++)
+			toReturn[toReturn.length - countZeros] = 0;
 
 			// now, we need to get the first EMA of the array, which will occur in the array at (period - 1).  This is just the same
 			// as the SMA.
 		double firstEMA = 0;
-		for (int countAdditurs = 0; countAdditurs < period; countAdditurs++)
-			firstEMA += closes[countAdditurs];
+		for (int countAdditurs = 1; countAdditurs < period + 1; countAdditurs++)
+			firstEMA += closes[toReturn.length - countAdditurs];
 
 		firstEMA = firstEMA / period;
 
-		toReturn[(period - 1)] = firstEMA;
+		toReturn[closes.length - period] = firstEMA;
 
 			// Now, we need to fill up the rest of the EMAs using the formula
 			// EMA = (Close today * multiplier)
 			// + (EMA of yesterday * (1 - multiplier))
 
-		for (int countEMAs = period; countEMAs < closes.length; countEMAs++) {
+		for (int countEMAs = closes.length - (period + 1); countEMAs >= 0; countEMAs--) {
 
-			toReturn[countEMAs] = (closes[countEMAs] * multiplier) + (toReturn[countEMAs - 1] * (1 - multiplier));
+			toReturn[countEMAs] = (closes[countEMAs] * multiplier) +
+				(toReturn[(countEMAs + 1)] * (1 - multiplier));
 
 				// the alternate code for method 1 is
 				// ((closes[countEMAs] - toReturn[(countEMAs - 1)]) * multiplier) + toReturn[(countEMAs - 1)];
 				// see http://www.decisionpoint.com/tacourse/MovingAve.html
-
-		}	// for countEMAs
+		}	// for
 
 		return toReturn;
 
