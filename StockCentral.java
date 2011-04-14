@@ -1001,6 +1001,8 @@ public class StockCentral implements StockCentralConstants {
 
 	}	// mergeFloatArrays
 
+        // THIS IS BACKWARDS!!!  The one marked first is being put at index 0, 
+        // and the one marked second after it.
 	public static double[] mergeDoubleArrays (double[] first, double[] second) {
 
 		double[] toReturn = new double[first.length + second.length];
@@ -1045,13 +1047,49 @@ public class StockCentral implements StockCentralConstants {
 
 	public static double[] calculateEMA(float[] closes, int period) {
 
-		double[] toReturn = new double[closes.length];
+		double[] toReturn;
 
 			// first, calculate the multiplier.
 		double multiplier = (2.0f / (1.0f + period));
 
-		// next, let's fill in the zeros at the beginning of the array.
-		for (int countZeros = 1; countZeros < period; countZeros++)
+	    	// next, let's create an array to hold the opening zeros.
+		double[] openingZeros = new double[period - 1];
+        Arrays.fill(openingZeros, 0);
+
+            // next, we need to calculate the very first EMA, which is really just the first
+            // SMA.
+        double sumOfFirstCloses = 0;
+
+        for (int countFirstCloses = (closes.length - 1); 
+            countFirstCloses >= (closes.length - period); countFirstCloses--)
+                sumOfFirstCloses += closes[countFirstCloses];
+        
+        double firstEMA = sumOfFirstCloses / period;
+        double[] emaWithoutZeros = new double[closes.length - period];
+        emaWithoutZeros[emaWithoutZeros.length - 1] = firstEMA;
+
+            // finally, we need to compute all of the rest of the EMAs
+            // we are using the following formula
+    		// EMA = (Close today * multiplier)
+			// + (EMA of yesterday * (1 - multiplier))
+        for (int countEMAs = emaWithoutZeros.length - 1; countEMAs >=0; countEMA--) {
+
+            float todaysClose = closes[countEMAs];
+            double yesterdaysEMA = emaWithoutZeros[countEMAs + 1];
+
+            emaWithoutZeros[countEMAs] = (todaysClose * multiplier) +
+                (yesterdaysEMA * (1 - multiplier));
+
+        }   // looping to calculate all EMAs
+
+            // Now, let's merge the zeros with the emas.  This seems like the wrong way, but
+            // that's the way the method works.
+        toReturn = mergeDoubleArrays(emaWithoutZeros, openingZeros);
+
+/*
+    I am commenting all of this out for now, on the theory that there is a problem with it, but 
+    who really knows.
+        for (int countZeros = 1; countZeros < period; countZeros++)
 			toReturn[toReturn.length - countZeros] = 0;
 
 			// now, we need to get the first EMA of the array, which will occur in the array at (period - 1).  This is just the same
@@ -1077,6 +1115,11 @@ public class StockCentral implements StockCentralConstants {
 				// ((closes[countEMAs] - toReturn[(countEMAs - 1)]) * multiplier) + toReturn[(countEMAs - 1)];
 				// see http://www.decisionpoint.com/tacourse/MovingAve.html
 		}	// for
+
+*/
+
+            // This is just for error checking.  Will be deleted.
+        System.out.println("Today's " + period + "-period EMA:  " + toReturn[0];
 
 		return toReturn;
 
@@ -1084,13 +1127,49 @@ public class StockCentral implements StockCentralConstants {
 
 	public static double[] calculateEMA(double[] closes, int period) {
 
-		double[] toReturn = new double[closes.length];
+    	double[] toReturn;
 
 			// first, calculate the multiplier.
 		double multiplier = (2.0f / (1.0f + period));
 
-			// next, let's fill in the zeros at the beginning of the array.
-		for (int countZeros = 1; countZeros < period; countZeros++)
+	    	// next, let's create an array to hold the opening zeros.
+		double[] openingZeros = new double[period - 1];
+        Arrays.fill(openingZeros, 0);
+
+            // next, we need to calculate the very first EMA, which is really just the first
+            // SMA.
+        double sumOfFirstCloses = 0;
+
+        for (int countFirstCloses = (closes.length - 1); 
+            countFirstCloses >= (closes.length - period); countFirstCloses--)
+                sumOfFirstCloses += closes[countFirstCloses];
+        
+        double firstEMA = sumOfFirstCloses / period;
+        double[] emaWithoutZeros = new double[closes.length - period];
+        emaWithoutZeros[emaWithoutZeros.length - 1] = firstEMA;
+
+            // finally, we need to compute all of the rest of the EMAs
+            // we are using the following formula
+    		// EMA = (Close today * multiplier)
+			// + (EMA of yesterday * (1 - multiplier))
+        for (int countEMAs = emaWithoutZeros.length - 1; countEMAs >=0; countEMA--) {
+
+            double todaysClose = closes[countEMAs];
+            double yesterdaysEMA = emaWithoutZeros[countEMAs + 1];
+
+            emaWithoutZeros[countEMAs] = (todaysClose * multiplier) +
+                (yesterdaysEMA * (1 - multiplier));
+
+        }   // looping to calculate all EMAs
+
+            // Now, let's merge the zeros with the emas.  This seems like the wrong way, but
+            // that's the way the method works.
+        toReturn = mergeDoubleArrays(emaWithoutZeros, openingZeros);
+
+/*
+    I am commenting all of this out for now, on the theory that there is a problem with it, but 
+    who really knows.
+        for (int countZeros = 1; countZeros < period; countZeros++)
 			toReturn[toReturn.length - countZeros] = 0;
 
 			// now, we need to get the first EMA of the array, which will occur in the array at (period - 1).  This is just the same
@@ -1116,6 +1195,11 @@ public class StockCentral implements StockCentralConstants {
 				// ((closes[countEMAs] - toReturn[(countEMAs - 1)]) * multiplier) + toReturn[(countEMAs - 1)];
 				// see http://www.decisionpoint.com/tacourse/MovingAve.html
 		}	// for
+
+*/
+
+            // This is just for error checking.  Will be deleted.
+        System.out.println("Today's " + period + "-period EMA:  " + toReturn[0];
 
 		return toReturn;
 
