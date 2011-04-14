@@ -19,6 +19,7 @@ import java.net.URL;
 public class StockTickerLoader implements Serializable {
 
 	public static final String DEFAULT_FILENAME = "default_tickers.tkr";
+    public static final String DEBUG_TICKER = "MMM";
 
 	/**
 	 * @param args
@@ -38,14 +39,17 @@ public class StockTickerLoader implements Serializable {
 		ArrayList<String> tickers = pullETFTickers();
 */
 //		ArrayList<String> etfTickers = parseESDList(ETF_FILE_NAME);
-		ArrayList<String> sp500Tickers = parseESDList(SP500_FILE_NAME);
+//		ArrayList<String> sp500Tickers = parseESDList(SP500_FILE_NAME);
 //		ArrayList<String> russ3000Tickers = parseESDList(RUSSEL3000_FILE_NAME);
 
 			// Third, we need to create a StockTickerArray and load up each and every stock ticker.
 		StockTickerArray tickerArray = new StockTickerArray();
 
+            // This is a temporary thing.  I just want to run this with a SINGLE ticker for debugging purposes.
+        tickerArray.add(DEBUG_TICKER);
+
 //		tickerArray.addAll(etfTickers);
-		tickerArray.addAll(sp500Tickers);
+//		tickerArray.addAll(sp500Tickers);
 //		tickerArray.addAll(russ3000Tickers);
 
 			// Finally, we need to save this into a file.

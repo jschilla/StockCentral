@@ -72,6 +72,12 @@ public class MacD {
 
 		m_averageHistogram = totalOfHistograms / (closes.length - largeEMAPeriod);
 
+            // FOR DEBUGGING PURPOSES ONLY!!!
+        System.out.println("Finished " + smallEMAPeriod + "," + largeEMAPeriod + "," + signalPeriod + " MacD calculation!");
+        System.out.println("MacD today:  " + m_macd[0]);
+        System.out.println("Signal today:  " + m_signal[0]);
+        System.out.println("Histogram today:  " + m_histogram[0]);
+
 	}	// calculateMacD
 
 }	// class MacD

@@ -741,10 +741,11 @@ public class StockData implements Monitorable, StockCentralConstants,
 
 		m_5DaySMA = StockCentral.calculateSMA(m_closes, 5);
 
-		m_macd_9_26_9 = new MacD(9, 26, 9, m_closes);
-		m_macd_5_35_5 = new MacD(5, 35, 5, m_closes);
-		m_macd_4_26_9 = new MacD(4, 26, 9, m_closes);
-		m_macd_4_9_4 = new MacD(4, 9, 4, m_closes);
+		    // FOR DEBUGGING PURPOSES I AM COMMENTING THESE OUT!!!
+        //m_macd_9_26_9 = new MacD(9, 26, 9, m_closes);
+		//m_macd_5_35_5 = new MacD(5, 35, 5, m_closes);
+		//m_macd_4_26_9 = new MacD(4, 26, 9, m_closes);
+		//m_macd_4_9_4 = new MacD(4, 9, 4, m_closes);
 
 		/*
 		 * m_rsi = StockCentral.calculateRSI(m_closes);
