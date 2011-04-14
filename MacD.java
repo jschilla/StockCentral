@@ -55,6 +55,8 @@ public class MacD {
 		m_signal = StockCentral.mergeDoubleArrays(zeros, signalWithoutZeros);
 
 			// Next, let's calculate the histogram.
+		m_histogram = new double[closes.length];
+
 		for (int countHistograms = 0; countHistograms < closes.length; countHistograms++)
 			m_histogram[countHistograms] = m_macd[countHistograms] - m_signal[countHistograms];
 
