@@ -3,6 +3,8 @@
  */
 package stockcentral;
 
+import java.util.Arrays;
+
 /**
  * @author Jack's Dell
  *
@@ -36,15 +38,18 @@ public class MacD {
 
 			// Now, let's calculate the difference between the small EMA and the big one.  That's our MacD
 
-		double[] macdWithoutZeros = new double[closes.length - largeEMAPeriod];
-		double[] zeros = new double[largeEMAPeriod];
+		double[] macdWithoutZeros = new double[closes.length - (largeEMAPeriod - 1)];
+		double[] zeros = new double[largeEMAPeriod - 1];
 
-			// The first part of the array is going to just be zero.
-		java.util.Arrays.fill(zeros, 0, zeros.length - 1, 0.0);
+			// Fill up the zeros array with zeros!
+		Arrays.fill(zeros, 0);
 
 			// Now we calculate the MacD in a separate array without the zeros, which we will then merge.
-		for (int countMACDs = 0; countMACDs < macdWithoutZeros.length; countMACDs++)
-			macdWithoutZeros[countMACDs] = smallEMA[countMACDs + largeEMAPeriod] - largeEMA[countMACDs + largeEMAPeriod];
+        for (int countMACDs = macdWithoutZeros.length; macdWithoutZeros >= 0; macdWithoutZeros--)
+            macdWithoutZeros[countMACDs] = smallEMA[countMACDs] - largeEMA[countMACDs];
+
+//		for (int countMACDs = 0; countMACDs < macdWithoutZeros.length; countMACDs++)
+//			macdWithoutZeros[countMACDs] = smallEMA[countMACDs + largeEMAPeriod] - largeEMA[countMACDs + largeEMAPeriod];
 
 		m_macd = StockCentral.mergeDoubleArrays(macdWithoutZeros, zeros);
 
@@ -52,7 +57,7 @@ public class MacD {
 			// and then we're going to merge that with the zeros array already created, and that's our signal line!
 		double[] signalWithoutZeros = StockCentral.calculateEMA(m_macd, signalPeriod);
 
-		m_signal = StockCentral.mergeDoubleArrays(zeros, signalWithoutZeros);
+		m_signal = StockCentral.mergeDoubleArrays(signalWithoutZeros, zeros);
 
 			// Next, let's calculate the histogram.
 		m_histogram = new double[closes.length];
