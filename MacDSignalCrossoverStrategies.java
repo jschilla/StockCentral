@@ -15,8 +15,11 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
     private static final String[] STRATEGY_NAMES = { "Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
     	"Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
     	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
-    	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend" };
+    	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Bearish Signal Cross Over; Exit at Reversal of MacD Trend" };
+
 
     /* (non-Javadoc)
 	 * @see stockcentral.BacktestStrategies#getNumberOfStrategies()
@@ -25,23 +28,6 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		// TODO Auto-generated method stub
 		return STRATEGY_NAMES.length;
 	}
-
-	/**	This method translates a strategyId into a two-dimensional array.  Since we're dealing with two dimensions,
-	*	we have to be able to do this.
-
-	private int[] calculateArrayIndicesFromId (int strategyId) {
-
-		int[] toReturn = new int[2];
-
-		toReturn[0] = strategyId / RSI_MAXES.length;
-
-		toReturn[1] = strategyId % RSI_MAXES.length;
-
-		return toReturn;
-
-	}	// calculateArrayIndicesFromId
-
-	*/
 
 	public String getStrategyName (int strategyId) {
 
@@ -57,7 +43,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		// TODO Auto-generated method stub
 		boolean toReturn = true;
 
-		if (strategyId >= 2)
+		if (strategyId >= 3)
 		toReturn = false;
 
 		return toReturn;
@@ -99,10 +85,16 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 						toReturn = true;
 
 		}
+		else if (strategyId == 2) {
+
+			if (macd[lookback] < macd[lookback + 1])
+				toReturn = true;
+
+		}
 			// If this is bearish strategy, in which case we are looking for the macd to cross down and
 			// under the center line or to cross back up the signal line (as a stop loss).
 			// We use the histogram to detect such a signal line crossover.
-		else if (strategyId == 2) {
+		else if (strategyId == 3) {
 
 			if (((macd[lookback] < 0) && (macd[lookback + 1] > 0)) ||
 					((histogram[lookback] > 0) && (histogram[lookback + 1] < 0)))
@@ -111,12 +103,18 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		}
 			// This bullish strategy is just a slight modification -- it
 			// also exits if the MacD turns around at all.
-		else if (strategyId == 3) {
+		else if (strategyId == 4) {
 
 			if (((macd[lookback] < 0) && (macd[lookback + 1] > 0)) ||
 					((histogram[lookback] > 0) && (histogram[lookback + 1] < 0)) ||
 					(macd[lookback] > macd[lookback + 1]))
 						toReturn = true;
+		}
+		else if (strategyId == 5) {
+
+			if (macd[lookback] > macd[lookback + 1])
+				toReturn = true;
+
 		}
 
 		return toReturn;
