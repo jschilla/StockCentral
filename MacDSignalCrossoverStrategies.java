@@ -137,13 +137,13 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		double[] macd = macdData.getMacD();
 		double[] histogram = macdData.getHistogram();
 
-		if (strategyId <= 1) {
+		if (strategyId <= 2) {
 
 			if ((histogram[lookBack] > 0) && (histogram[lookBack + 1] < 0) && (macd[lookBack] < 0))
 				toReturn = true;
 
 		}
-		else if (strategyId >= 2) {
+		else if (strategyId >= 3) {
 
 			if ((histogram[lookBack] < 0) && (histogram[lookBack + 1] > 0) && (macd[lookBack] > 0))
 				toReturn = true;
