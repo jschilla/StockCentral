@@ -45,7 +45,7 @@ public class MacD {
 		Arrays.fill(zeros, 0);
 
 			// Now we calculate the MacD in a separate array without the zeros, which we will then merge.
-        for (int countMACDs = macdWithoutZeros.length; macdWithoutZeros >= 0; macdWithoutZeros--)
+        for (int countMACDs = macdWithoutZeros.length - 1; countMACDs >= 0; countMACDs--)
             macdWithoutZeros[countMACDs] = smallEMA[countMACDs] - largeEMA[countMACDs];
 
 //		for (int countMACDs = 0; countMACDs < macdWithoutZeros.length; countMACDs++)
@@ -72,11 +72,12 @@ public class MacD {
 
 		m_averageHistogram = totalOfHistograms / (closes.length - largeEMAPeriod);
 
-            // FOR DEBUGGING PURPOSES ONLY!!!
+        /*    // FOR DEBUGGING PURPOSES ONLY -- NOW REMOVED!
         System.out.println("Finished " + smallEMAPeriod + "," + largeEMAPeriod + "," + signalPeriod + " MacD calculation!");
         System.out.println("MacD today:  " + m_macd[0]);
         System.out.println("Signal today:  " + m_signal[0]);
         System.out.println("Histogram today:  " + m_histogram[0]);
+        */
 
 	}	// calculateMacD
 

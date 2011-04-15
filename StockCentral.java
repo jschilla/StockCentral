@@ -1001,7 +1001,7 @@ public class StockCentral implements StockCentralConstants {
 
 	}	// mergeFloatArrays
 
-        // THIS IS BACKWARDS!!!  The one marked first is being put at index 0, 
+        // THIS IS BACKWARDS!!!  The one marked first is being put at index 0,
         // and the one marked second after it.
 	public static double[] mergeDoubleArrays (double[] first, double[] second) {
 
@@ -1060,10 +1060,10 @@ public class StockCentral implements StockCentralConstants {
             // SMA.
         double sumOfFirstCloses = 0;
 
-        for (int countFirstCloses = (closes.length - 1); 
+        for (int countFirstCloses = (closes.length - 1);
             countFirstCloses >= (closes.length - period); countFirstCloses--)
                 sumOfFirstCloses += closes[countFirstCloses];
-        
+
         double firstEMA = sumOfFirstCloses / period;
         double[] emaWithoutZeros = new double[closes.length - period];
         emaWithoutZeros[emaWithoutZeros.length - 1] = firstEMA;
@@ -1072,7 +1072,7 @@ public class StockCentral implements StockCentralConstants {
             // we are using the following formula
     		// EMA = (Close today * multiplier)
 			// + (EMA of yesterday * (1 - multiplier))
-        for (int countEMAs = emaWithoutZeros.length - 1; countEMAs >=0; countEMA--) {
+        for (int countEMAs = emaWithoutZeros.length - 2; countEMAs >=0; countEMAs--) {
 
             float todaysClose = closes[countEMAs];
             double yesterdaysEMA = emaWithoutZeros[countEMAs + 1];
@@ -1087,7 +1087,7 @@ public class StockCentral implements StockCentralConstants {
         toReturn = mergeDoubleArrays(emaWithoutZeros, openingZeros);
 
 /*
-    I am commenting all of this out for now, on the theory that there is a problem with it, but 
+    I am commenting all of this out for now, on the theory that there is a problem with it, but
     who really knows.
         for (int countZeros = 1; countZeros < period; countZeros++)
 			toReturn[toReturn.length - countZeros] = 0;
@@ -1118,8 +1118,8 @@ public class StockCentral implements StockCentralConstants {
 
 */
 
-            // This is just for error checking.  Will be deleted.
-        System.out.println("Today's " + period + "-period EMA:  " + toReturn[0];
+            // This is just for error checking.  Not commented out.
+       // System.out.println("Today's " + period + "-period EMA:  " + toReturn[0]);
 
 		return toReturn;
 
@@ -1140,10 +1140,10 @@ public class StockCentral implements StockCentralConstants {
             // SMA.
         double sumOfFirstCloses = 0;
 
-        for (int countFirstCloses = (closes.length - 1); 
+        for (int countFirstCloses = (closes.length - 1);
             countFirstCloses >= (closes.length - period); countFirstCloses--)
                 sumOfFirstCloses += closes[countFirstCloses];
-        
+
         double firstEMA = sumOfFirstCloses / period;
         double[] emaWithoutZeros = new double[closes.length - period];
         emaWithoutZeros[emaWithoutZeros.length - 1] = firstEMA;
@@ -1152,7 +1152,7 @@ public class StockCentral implements StockCentralConstants {
             // we are using the following formula
     		// EMA = (Close today * multiplier)
 			// + (EMA of yesterday * (1 - multiplier))
-        for (int countEMAs = emaWithoutZeros.length - 1; countEMAs >=0; countEMA--) {
+        for (int countEMAs = emaWithoutZeros.length - 2; countEMAs >=0; countEMAs--) {
 
             double todaysClose = closes[countEMAs];
             double yesterdaysEMA = emaWithoutZeros[countEMAs + 1];
@@ -1167,7 +1167,7 @@ public class StockCentral implements StockCentralConstants {
         toReturn = mergeDoubleArrays(emaWithoutZeros, openingZeros);
 
 /*
-    I am commenting all of this out for now, on the theory that there is a problem with it, but 
+    I am commenting all of this out for now, on the theory that there is a problem with it, but
     who really knows.
         for (int countZeros = 1; countZeros < period; countZeros++)
 			toReturn[toReturn.length - countZeros] = 0;
@@ -1198,8 +1198,8 @@ public class StockCentral implements StockCentralConstants {
 
 */
 
-            // This is just for error checking.  Will be deleted.
-        System.out.println("Today's " + period + "-period EMA:  " + toReturn[0];
+        // This is just for error checking.  Not commented out.
+        // System.out.println("Today's " + period + "-period EMA:  " + toReturn[0]);
 
 		return toReturn;
 
