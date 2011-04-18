@@ -22,7 +22,17 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
     	"Short Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
     	"Short Bearish Signal Cross Over; Exit at Reversal of MacD Trend",
         "Short Bearish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
-    	"Short Bearish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend" };
+    	"Short Bearish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend",
+        "Long Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+        "Long Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Long Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
+    	"Long Bullish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Long Bullish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend",
+    	"Long Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+    	"Long Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Long Bearish Signal Cross Over; Exit at Reversal of MacD Trend",
+        "Long Bearish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Long Bearish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend" };
 
 
     /* (non-Javadoc)
@@ -63,7 +73,17 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
 		boolean toReturn = false;
 
-		MacD macdData = sd.getMacD494();
+		MacD macdData;
+
+        if (strategyId >= 10) {
+
+            macdData = sd.getMacD9269();
+
+            strategyId -= 10;
+
+        }
+        else
+            macdData = sd.getMacD494();
 
 		double[] macd = macdData.getMacD();
 		//double[] signal = macdData.getSignal();
@@ -142,7 +162,17 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
 		boolean toReturn = false;
 
-		MacD macdData = sd.getMacD494();
+    	MacD macdData;
+
+        if (strategyId >= 10) {
+
+            macdData = sd.getMacD9269();
+
+            strategyId -= 10;
+
+        }
+        else
+            macdData = sd.getMacD494();
 
 		double[] macd = macdData.getMacD();
 		double[] histogram = macdData.getHistogram();
