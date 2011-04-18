@@ -16,6 +16,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
     private static final String[] STRATEGY_NAMES = { "Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
     	"Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
     	"Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
+    	"Bulllish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
     	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
     	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
     	"Bearish Signal Cross Over; Exit at Reversal of MacD Trend" };
@@ -43,7 +44,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		// TODO Auto-generated method stub
 		boolean toReturn = true;
 
-		if (strategyId >= 3)
+		if (strategyId >= 4)
 		toReturn = false;
 
 		return toReturn;
@@ -68,7 +69,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 			// If this is bullish strategy, in which case we are looking for the macd to cross up and over
 			// center line or to cross back down the signal line (as a stop loss).  We use the
 			// histogram to detect such a signal line crossover.
-		if (strategyId == 0) {
+		if ((strategyId == 0) || (strategyId == 3)) {
 
 			if (((macd[lookback] > 0) && (macd[lookback + 1] < 0)) ||
 			((histogram[lookback] < 0) && (histogram[lookback + 1] > 0)))
@@ -94,7 +95,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 			// If this is bearish strategy, in which case we are looking for the macd to cross down and
 			// under the center line or to cross back up the signal line (as a stop loss).
 			// We use the histogram to detect such a signal line crossover.
-		else if (strategyId == 3) {
+		else if (strategyId == 4) {
 
 			if (((macd[lookback] < 0) && (macd[lookback + 1] > 0)) ||
 					((histogram[lookback] > 0) && (histogram[lookback + 1] < 0)))
@@ -103,14 +104,14 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		}
 			// This bullish strategy is just a slight modification -- it
 			// also exits if the MacD turns around at all.
-		else if (strategyId == 4) {
+		else if (strategyId == 5) {
 
 			if (((macd[lookback] < 0) && (macd[lookback + 1] > 0)) ||
 					((histogram[lookback] > 0) && (histogram[lookback + 1] < 0)) ||
 					(macd[lookback] > macd[lookback + 1]))
 						toReturn = true;
 		}
-		else if (strategyId == 5) {
+		else if (strategyId == 6) {
 
 			if (macd[lookback] > macd[lookback + 1])
 				toReturn = true;
@@ -143,7 +144,15 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 				toReturn = true;
 
 		}
-		else if (strategyId >= 3) {
+		else if (strategyId == 3) {
+
+			if ((histogram[lookBack] > 0) && (histogram[lookBack + 1] < 0) && (macd[lookBack] < 0))
+				if (findBulgeInLastStretch (macdData, lookBack))
+					toReturn = true;
+
+
+		}
+		else if (strategyId >= 4) {
 
 			if ((histogram[lookBack] < 0) && (histogram[lookBack + 1] > 0) && (macd[lookBack] > 0))
 				toReturn = true;
@@ -172,5 +181,46 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		// TODO Auto-generated method stub
 		return true;
 	}
+
+	private static boolean findBulgeInLastStretch(MacD macdData, int lookback) {
+
+		boolean toReturn = false;
+
+		double[] macd = macdData.getMacD();
+		double[] signal = macdData.getSignal();
+		double[] histogram = macdData.getMacD();
+		double avgHistogram = macdData.getAverageHistogram();
+
+			// This block of code looks for the most recent cross-over in the other direction.  It has
+			// to catch an out of bounds index exception, in case we go beyond the length of the data.
+			// It also finds the largest histogram size in the range, then compares it to the average.
+			// If it's more than double of the average, then we return true because we've found a bulge.
+		try {
+
+			int lookingForCrossover = 1;
+
+			double largestHistogramSizeInRange = 0.0;
+
+				// This looks for the most recent reverse crossover of the macd and the signal.
+			while (macd[lookback + lookingForCrossover] < signal[lookback + lookingForCrossover]) {
+
+				if (histogram[lookback + lookingForCrossover] > largestHistogramSizeInRange)
+					largestHistogramSizeInRange = histogram[lookback + lookingForCrossover];
+
+				lookingForCrossover++;
+
+			}
+
+			if (largestHistogramSizeInRange > (avgHistogram * 2))
+				toReturn = true;
+
+		}
+		catch (ArrayIndexOutOfBoundsException e) {
+
+		}
+
+		return toReturn;
+
+	}	// findBulgeInLastStretch
 
 }
