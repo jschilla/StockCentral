@@ -13,14 +13,26 @@ package stockcentral;
  */
 public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
-    private static final String[] STRATEGY_NAMES = { "Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
-    	"Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
-    	"Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
-    	"Bullish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
-    	"Bullish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend",
-    	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
-    	"Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
-    	"Bearish Signal Cross Over; Exit at Reversal of MacD Trend" };
+    private static final String[] STRATEGY_NAMES = { "Short Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+    	"Small Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Small Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
+    	"Small Bullish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Small Bullish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend",
+    	"Small Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+    	"Small Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Small Bearish Signal Cross Over; Exit at Reversal of MacD Trend",
+        "Small Bearish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Small Bearish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend",
+        "Large Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+        "Large Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Large Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
+    	"Large Bullish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Large Bullish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend",
+    	"Large Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+    	"Large Bearish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Large Bearish Signal Cross Over; Exit at Reversal of MacD Trend",
+        "Large Bearish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
+    	"Large Bearish Signal Cross Over After Bulge; Exit at Reversal of MacD Trend" };
 
 
     /* (non-Javadoc)
@@ -61,7 +73,17 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
 		boolean toReturn = false;
 
-		MacD macdData = sd.getMacD494();
+		MacD macdData;
+
+        if (strategyId >= 10) {
+
+            macdData = sd.getMacD9269();
+
+            strategyId -= 10;
+
+        }
+        else
+            macdData = sd.getMacD494();
 
 		double[] macd = macdData.getMacD();
 		//double[] signal = macdData.getSignal();
@@ -98,7 +120,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 				// If this is bearish strategy, in which case we are looking for the macd to cross down and
 				// under the center line or to cross back up the signal line (as a stop loss).
 				// We use the histogram to detect such a signal line crossover.
-			else if (strategyId == 5) {
+			else if ((strategyId == 5) || (strategyId == 8)) {
 
 				if (((macd[lookback - 1] < 0) && (macd[lookback] > 0)) ||
 						((histogram[lookback - 1] > 0) && (histogram[lookback] < 0)))
@@ -114,7 +136,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 						(macd[lookback - 1] > macd[lookback]))
 							toReturn = true;
 			}
-			else if (strategyId == 7) {
+			else if ((strategyId == 7) || (strategyId == 9)) {
 
 				if (macd[lookback - 1] > macd[lookback])
 					toReturn = true;
@@ -140,7 +162,17 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
 		boolean toReturn = false;
 
-		MacD macdData = sd.getMacD494();
+    	MacD macdData;
+
+        if (strategyId >= 10) {
+
+            macdData = sd.getMacD9269();
+
+            strategyId -= 10;
+
+        }
+        else
+            macdData = sd.getMacD494();
 
 		double[] macd = macdData.getMacD();
 		double[] histogram = macdData.getHistogram();
@@ -154,17 +186,24 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		else if ((strategyId == 3) || (strategyId == 4)) {
 
 			if ((histogram[lookBack] > 0) && (histogram[lookBack + 1] < 0) && (macd[lookBack] < 0))
-				if (findBulgeInLastStretch (macdData, lookBack))
+				if (findBulgeInLastStretch (macdData, lookBack, true))
 					toReturn = true;
 
 
 		}
-		else if (strategyId >= 5) {
+		else if ((strategyId >= 5) && (strategyId <= 7)) {
 
 			if ((histogram[lookBack] < 0) && (histogram[lookBack + 1] > 0) && (macd[lookBack] > 0))
 				toReturn = true;
 
 		}
+        else if (strategyId >= 8) {
+
+    		if ((histogram[lookBack] < 0) && (histogram[lookBack + 1] > 0) && (macd[lookBack] > 0))
+                if (findBulgeInLastStretch (macdData, lookBack, false))
+                    toReturn = true;
+
+        }
 
 
 		return toReturn;
@@ -189,7 +228,7 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 		return true;
 	}
 
-	private static boolean findBulgeInLastStretch(MacD macdData, int lookback) {
+	private static boolean findBulgeInLastStretch(MacD macdData, int lookback, boolean bullish) {
 
 		boolean toReturn = false;
 
@@ -209,7 +248,8 @@ public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 			double largestHistogramSizeInRange = 0.0;
 
 				// This looks for the most recent reverse crossover of the macd and the signal.
-			while (macd[lookback + lookingForCrossover] < signal[lookback + lookingForCrossover]) {
+			while (((bullish) && (macd[lookback + lookingForCrossover] < signal[lookback + lookingForCrossover])) ||
+                    ((!bullish) && (macd[lookback + lookingForCrossover] > signal[lookback + lookingForCrossover]))) {
 
 				if (Math.abs(histogram[lookback + lookingForCrossover]) > largestHistogramSizeInRange)
 					largestHistogramSizeInRange = Math.abs(histogram[lookback + lookingForCrossover]);
