@@ -13,7 +13,7 @@ package stockcentral;
  */
 public class MacDSignalCrossoverStrategies extends BacktestStrategies {
 
-    private static final String[] STRATEGY_NAMES = { "Short Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
+    private static final String[] STRATEGY_NAMES = { "Small Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross",
     	"Small Bullish Signal Cross Over; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
     	"Small Bullish Signal Cross Over; Exit at Reversal of MacD Trend",
     	"Small Bullish Signal Cross Over After Bulge; Exit at Center Cross/Reverse Signal Cross/Reversal of MacD Trend",
