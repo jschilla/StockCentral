@@ -71,7 +71,7 @@ public class StockDataLoader {
 				StockData sd = sdg.pullStockPriceHistoricalData(ticker);
 
 					// we only care about stocks that have a volume of at least 25000.
-				if (sd.getVolumes()[0] >= 25000) {
+				if (sd.getVolumes()[0] >= 1000) {
 
 					// sd.calculateBellsAndWhistles();
 
