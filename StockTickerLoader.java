@@ -39,7 +39,7 @@ public class StockTickerLoader implements Serializable {
 		ArrayList<String> tickers = pullETFTickers();
 */
 		ArrayList<String> etfTickers = parseESDList(ETF_FILE_NAME);
-//		ArrayList<String> sp500Tickers = parseESDList(SP500_FILE_NAME);
+		ArrayList<String> sp500Tickers = parseESDList(SP500_FILE_NAME);
 //		ArrayList<String> russ3000Tickers = parseESDList(RUSSEL3000_FILE_NAME);
 
 			// Third, we need to create a StockTickerArray and load up each and every stock ticker.
@@ -49,7 +49,7 @@ public class StockTickerLoader implements Serializable {
 //      tickerArray.add(DEBUG_TICKER);
 
 		tickerArray.addAll(etfTickers);
-//		tickerArray.addAll(sp500Tickers);
+		tickerArray.addAll(sp500Tickers);
 //		tickerArray.addAll(russ3000Tickers);
 
 			// Finally, we need to save this into a file.
